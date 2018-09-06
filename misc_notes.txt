@@ -1,0 +1,25 @@
+ls -l /dev/bus/usb/00*
+
+Bus 003 Device 020: ID 045e:02ae Microsoft Corp. Xbox NUI Camera
+Bus 003 Device 018: ID 045e:02b0 Microsoft Corp. Xbox NUI Motor
+Bus 003 Device 019: ID 045e:02ad Microsoft Corp. Xbox NUI Audio
+
+
+cd /etc/udev/rules.d/
+sudo touch kinect.rules
+sudo nano kinect.rules
+
+SUBSYSTEM=="usb", ATTRS{idVendor}=="045e", MODE:="0666"
+SUBSYSTEM=="usb_device", ATTRS{idVendor}=="045e", MODE:="0666"
+
+sudo udevadm control --reload-rules
+Put this udev file in your /etc/udev/rules.d/ directory. This udev file will grant read and write access to ALL users, include non-privileged users, for ALL USB devices that have a matching Vendor ID. This means your device is accessible to non-root users even without modifying your executable or running it with sudo.
+
+This didn't work for me until I added a colon to bit that sets the mode value: MODE:="0666". I also only needed the usb line, and not the usb_device one. I'm using Debian
+
+After adding rule to /etc/udev/rules.d/ something like:
+SUBSYSTEM=="usb", ATTRS{idVendor}=="1234", ATTRS{idProduct}=="1234", MODE="0666", OWNER="YOU_USER_ID"
+
+do not forget to reload rules with:
+
+$ sudo udevadm control --reload-rules

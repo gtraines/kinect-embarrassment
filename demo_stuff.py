@@ -1,13 +1,13 @@
-import numpy as np
+import freenect
 import cv2
+from kin_emb import frame_convert2
 
 
-def do_the_stuff(cam_idx):
+def display_cam_stream(cam_idx):
     cap = cv2.VideoCapture(cam_idx)
 
-    while(True):
+    while True:
         try:
-            print(cam_idx)
             # Capture frame-by-frame
             ret, frame = cap.read()
 
@@ -28,5 +28,32 @@ def do_the_stuff(cam_idx):
     cv2.destroyAllWindows()
 
 
+def get_depth():
+    return frame_convert2.pretty_depth_cv(freenect.sync_get_depth()[0])
+
+
+def get_video():
+    return frame_convert2.video_cv(freenect.sync_get_video()[0])
+
+
+def display_kinect_stream():
+
+    cv2.namedWindow('Depth')
+
+    try:
+
+        print('Press ESC in window to stop')
+
+        while 1:
+            cv2.imshow('Depth', get_depth())
+            if cv2.waitKey(10) == 27:
+                break
+
+    except Exception as ex:
+        print(ex)
+
+    cv2.destroyAllWindows()
+
+
 if __name__ == '__main__':
-    do_the_stuff(1)
+    display_kinect_stream()
