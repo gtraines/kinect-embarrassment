@@ -1,9 +1,8 @@
 import cv2
-
 import sys
 
 
-class KCam(object):
+class CvCam(object):
 
     def __init__(self, index=0):
         self.cap = cv2.VideoCapture(index)
@@ -67,7 +66,7 @@ class KCam(object):
 if __name__ == '__main__':
     callback = lambda gray, fps: cv2.imshow('gray', gray)
 
-    with Camera(0) as cam:
+    with CvCam(0) as cam:
         print("Camera: %dx%d, %d" % (
             cam.get(cv2.CAP_PROP_FRAME_WIDTH),
             cam.get(cv2.CAP_PROP_FRAME_HEIGHT),

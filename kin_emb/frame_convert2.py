@@ -1,21 +1,4 @@
-import numpy as np
-
-
-def pretty_depth(depth):
-    """Converts depth into a 'nicer' format for display
-
-    This is abstracted to allow for experimentation with normalization
-
-    Args:
-        depth: A numpy array with 2 bytes per pixel
-
-    Returns:
-        A numpy array that has been processed with unspecified datatype
-    """
-    np.clip(depth, 0, 2**10 - 1, depth)
-    depth >>= 2
-    depth = depth.astype(np.uint8)
-    return depth
+from .depth_processing import pretty_depth
 
 
 def pretty_depth_cv(depth):
